@@ -1,0 +1,107 @@
+
+.author, .author:hover, .author:active {
+	color: #AAAAAA;
+	font-family: Geneva, Arial, Helvetica, sans-serif;
+	text-decoration: none;
+	font-size: 10px;
+	white-space: nowrap;
+	text-decoration: none;
+}
+
+
+body {
+	margin: 0px 0px 0px 0px;
+	background: #EEEEEE;
+}
+
+td {
+	font-family: Geneva, Arial, Helvetica, sans-serif;
+	font-size: 14px;
+}
+
+/*  menu begin */
+
+a {
+	color: #0000AA;
+	font-family: Geneva, Arial, Helvetica, sans-serif;
+	text-decoration: none;
+	font-size: 14px;
+}
+
+a:hover, a:active {
+	color: #AA0000;
+}
+
+/*  menu begin */
+
+a.menu_main {
+	margin-top: 1px;
+	color: #3D5138;
+	display: block;
+	font-family: Geneva, Arial, Helvetica, sans-serif;
+	text-decoration: none;
+	font-size: 14px;
+	white-space: nowrap;
+}
+
+a.menu_main:hover, a.menu_main:active {
+	color: #3D5138;
+}
+
+a.menu {
+	margin-top: 1px;
+	color: #506B4A;
+	display: block;
+	font-family: Geneva, Arial, Helvetica, sans-serif;
+	text-decoration: none;
+	font-size: 13px;
+	white-space: nowrap;
+}
+
+a.menu:hover, a.menu:active {
+	color: #506B4A;
+}
+
+img {
+	margin-top: 0px;
+	display: block;
+	padding: 0px;
+	border: 0px;
+}
+
+.simple_input {
+	background-color: white;
+	border-style: solid;
+	border-width: 1;
+	border-color: #6C98D9;
+	font-family: Verdana;
+	font-size: 10pt;
+	height: 21px;
+	margin: 2px;
+}
+
+.simple_select {
+	border: 1px solid #326BC0;
+	background-color: #F9F9F9;
+	text-align : left;
+	cursor : hand;
+}
+
+.simple_select_file {
+	border : 1px solid #285699;
+	background-color: transparent;
+	text-align : center;
+	cursor : hand;
+}
+
+.simple_button {
+	font-family: Geneva, Arial, Helvetica, sans-serif;
+	height: 22px;
+	font-size: 12px;
+	color: #000000;
+	text-align: center;
+	background-image: url(cp/img/button.gif);
+	background-repeat: repeat-x;
+	border: 1px solid #326BC0;
+}
+

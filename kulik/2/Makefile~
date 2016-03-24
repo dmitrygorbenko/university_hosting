@@ -1,0 +1,36 @@
+
+PROGRAM = pilgrim
+FILES_TO_COMPILE = pilgrim str params message config
+HEADERS_TO_COMPILE = define
+
+CC = g++
+CCFLAGS = -g -Wall
+LDFLAGS =
+C_SUFFIX = cpp
+H_SUFFIX = h
+
+HEADERS = $(addsuffix .$(H_SUFFIX), $(HEADERS_TO_COMPILE))
+OBJS = $(addsuffix .o, $(FILES_TO_COMPILE))
+FILES = $(addsuffix .$(C_SUFFIX), $(FILES_TO_COMPILE))
+
+#MAKEFLAGS = --no-print-directory --silent
+
+all: compile-all link-all
+
+compile-all: $(OBJS)
+
+link-all: $(OBJS)
+	$(CC) $(LDFLAGS) -o $(PROGRAM) $(OBJS)
+
+%.o: %.$(C_SUFFIX) %.$(H_SUFFIX) $(HEADERS)
+	$(CC) $(CCFLAGS) $(LDFLAGS) -c $< -o $@
+
+clean:
+	rm -rf $(OBJS) $(PROGRAM)
+	echo "Clean done"
+
+install:
+	echo "Install did not supported yet"
+	exit
+
+.NOEXPORT:

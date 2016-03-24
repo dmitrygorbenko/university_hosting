@@ -1,0 +1,36 @@
+zone "hosting.ai" IN {
+	type master;
+	file "hosting.ai.zone";
+	allow-update { none; };
+};
+
+zone "link8.lan" IN {
+	type master;
+	file "link8.lan.zone";
+	allow-update { none; };
+};
+
+zone "narod.ru.com.ua" IN {
+	type master;
+	file "narod.ru.com.ua.zone";
+	allow-update { none; };
+};
+
+zone "pupkin.com" IN {
+	type master;
+	file "pupkin.com.zone";
+	allow-update { none; };
+};
+
+
+zone "ppr.web.ai" IN {
+	type master;
+	file "ppr.web.ai.zone";
+	allow-update { none; };
+};
+
+zone "web.ai" IN {
+	type master;
+	file "web.ai.zone";
+	allow-update { none; };
+};

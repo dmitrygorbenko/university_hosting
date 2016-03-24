@@ -1,0 +1,15 @@
+$ORIGIN .
+$TTL 86400	; 1 day
+web.ai			IN SOA  ns.hosting.ai. hostmaster.hosting.ai. (
+				2005101900 ; serial
+				10800      ; refresh (3 hours)
+				900        ; retry (15 minutes)
+				604800     ; expire (1 week)
+				3600       ; negative caching (1 hour)
+				)
+		IN	NS	ns.hosting.ai.
+		IN	NS	ns2.hosting.ai.
+		IN	MX	10	mx.hosting.ai.
+		IN	MX	20	mx2.hosting.ai.
+		IN	A	172.16.212.200
+$ORIGIN web.ai.

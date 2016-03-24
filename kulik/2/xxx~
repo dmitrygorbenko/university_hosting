@@ -1,0 +1,5 @@
+
+ns_count = 10
+
+listen_ip = zhuk.xai11.ais
+listen_port = 7845

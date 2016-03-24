@@ -1,0 +1,269 @@
+
+create database domains;
+
+use domains;
+
+CREATE TABLE root_zone (
+id_table SERIAL PRIMARY KEY,
+zone_name varchar (255) NOT NULL,
+max_lease_time integer DEFAULT 2,
+initial integer DEFAULT 60,
+grace integer DEFAULT 14,
+pending integer DEFAULT 40,
+admin_email varchar (255) NOT NULL,
+active integer DEFAULT 1 );
+
+CREATE TABLE ns_list (
+id_table SERIAL PRIMARY KEY,
+ns_title varchar (255) NOT NULL,
+ns_domain varchar (255) NOT NULL,
+ns_ip varchar (16) NOT NULL );
+
+CREATE TABLE mx_list (
+id_table SERIAL PRIMARY KEY,
+mx_title varchar (255) NOT NULL,
+mx_domain varchar (255) NOT NULL,
+mx_ip varchar (16) NOT NULL );
+
+CREATE TABLE ns_of_root_zone (
+id_table SERIAL PRIMARY KEY,
+id_ns integer REFERENCES ns_list (id_table) ON DELETE CASCADE,
+id_root_zone integer REFERENCES root_zone (id_table) ON DELETE CASCADE,
+ns_master integer DEFAULT 0 );
+
+CREATE TABLE mx_of_root_zone (
+id_table SERIAL PRIMARY KEY,
+id_mx integer REFERENCES mx_list (id_table) ON DELETE CASCADE,
+id_root_zone integer REFERENCES root_zone (id_table) ON DELETE CASCADE,
+mx_prior integer DEFAULT 10 );
+
+########################################################################
+########################################################################
+########################################################################
+########################################################################
+
+CREATE TABLE client (
+id_table SERIAL PRIMARY KEY,
+login varchar (255),
+passwd varchar (255),
+register_date timestamp,
+last_log_date timestamp,
+last_log_ip varchar (16)
+);
+
+CREATE TABLE client_info (
+id_table SERIAL PRIMARY KEY,
+id_client integer REFERENCES client (id_table) ON DELETE CASCADE,
+firstname varchar(255) NOT NULL,
+lastname varchar(255) NOT NULL,
+company varchar (255),
+country varchar (255),
+region varchar (255),
+postal integer NOT NULL,
+city varchar (255) NOT NULL,
+address1 varchar (255) NOT NULL,
+address2 varchar (255),
+phone varchar (20) NOT NULL,
+fax varchar (20),
+email varchar (255) NOT NULL,
+egrpou integer DEFAULT 0,
+userhdl varchar (255),
+add_info text);
+
+CREATE TABLE domain_zone (
+id_table SERIAL PRIMARY KEY,
+id_client integer REFERENCES client (id_table) ON DELETE CASCADE,
+id_root_zone integer REFERENCES root_zone (id_table) ON DELETE CASCADE,
+full_name varchar (255) NOT NULL,
+domain varchar (255) NOT NULL,
+type varchar (255) NOT NULL,
+domain varchar (255) NOT NULL,
+register_date timestamp);
+
+CREATE TABLE domain_zone_state (
+id_table SERIAL PRIMARY KEY,
+id_domain_zone integer REFERENCES domain_zone (id_table) ON DELETE CASCADE,
+state varchar (255) NOT NULL,
+query_post_date timestamp NOT NULL,
+confirm_date timestamp NOT NULL,
+payed timestamp,
+lease_time integer NOT NULL,
+end_time timestamp,
+released timestamp,
+refused timestamp,
+holded timestamp,
+frozen timestamp );
+
+CREATE TABLE domain_zone_cfg (
+id_table SERIAL PRIMARY KEY,
+id_domain_zone integer REFERENCES domain_zone (id_table) ON DELETE CASCADE,
+ttl integer DEFAULT 86400,
+authority_server varchar (255) NOT NULL,
+root_email varchar (255) NOT NULL,
+serial varchar (255) NOT NULL,
+refresh integer DEFAULT 86400,
+retry integer DEFAULT 7200,
+expire integer DEFAULT 604800,
+negative integer DEFAULT 86400);
+
+CREATE TABLE ns_records (
+id_table SERIAL PRIMARY KEY,
+id_domain_zone integer REFERENCES domain_zone (id_table) ON DELETE CASCADE,
+domain varchar (255) NOT NULL,
+type varchar (255) NOT NULL DEFAULT 'IN',
+record varchar (255) NOT NULL );
+
+CREATE TABLE mx_records (
+id_table SERIAL PRIMARY KEY,
+id_domain_zone integer REFERENCES domain_zone (id_table) ON DELETE CASCADE,
+domain varchar (255) NOT NULL,
+type varchar (255) NOT NULL DEFAULT 'IN',
+mx_prior integer DEFAULT 10,
+record varchar (255) NOT NULL );
+
+CREATE TABLE a_records (
+id_table SERIAL PRIMARY KEY,
+id_domain_zone integer REFERENCES domain_zone (id_table) ON DELETE CASCADE,
+domain varchar (255) NOT NULL,
+type varchar (255) NOT NULL DEFAULT 'IN',
+record varchar (255) NOT NULL );
+
+CREATE TABLE cname_records (
+id_table SERIAL PRIMARY KEY,
+id_domain_zone integer REFERENCES domain_zone (id_table) ON DELETE CASCADE,
+domain varchar (255) NOT NULL,
+type varchar (255) NOT NULL DEFAULT 'IN',
+record varchar (255) NOT NULL );
+
+CREATE TABLE descr_table (
+id_table SERIAL PRIMARY KEY,
+id_domain_data integer REFERENCES domain_data (id_table) ON DELETE CASCADE,
+);
+
+CREATE TABLE domain_status_table (
+id_table SERIAL PRIMARY KEY,
+id_domain_data integer REFERENCES domain_data (id_table) ON DELETE CASCADE,
+wait_for_pay integer DEFAULT 1,
+queued integer DEFAULT 0,
+checked integer DEFAULT 0,
+suspended integer DEFAULT 0,
+refused integer DEFAULT 0,
+recalled integer DEFAULT 0,
+ok integer DEFAULT 0,
+hold integer DEFAULT 0,
+frozen integer DEFAULT 0,
+released integer DEFAULT 0 );
+
+CREATE TABLE wait_for_pay (
+id_table SERIAL PRIMARY KEY,
+id_domain_data integer REFERENCES domain_data (id_table) ON DELETE CASCADE );
+
+CREATE TABLE registered (
+id_table SERIAL PRIMARY KEY,
+id_domain_data integer REFERENCES domain_data (id_table) ON DELETE CASCADE );
+
+CREATE TABLE refused (
+id_table SERIAL PRIMARY KEY,
+id_domain_data integer REFERENCES domain_data (id_table) ON DELETE CASCADE );
+
+CREATE TABLE to_prolong (
+id_table SERIAL PRIMARY KEY,
+id_domain_data integer REFERENCES domain_data (id_table) ON DELETE CASCADE );
+
+CREATE TABLE to_create (
+id_table SERIAL PRIMARY KEY,
+id_domain_data integer REFERENCES domain_data (id_table) ON DELETE CASCADE );
+
+CREATE TABLE to_delete (
+id_table SERIAL PRIMARY KEY,
+id_domain_data integer REFERENCES domain_data (id_table) ON DELETE CASCADE );
+
+
+CREATE TABLE was_in_use (
+id_table SERIAL PRIMARY KEY,
+full_name varchar (255) NOT NULL,
+count_times integer DEFAULT 1);
+
+CREATE TABLE was_in_use_descr (
+id_table SERIAL PRIMARY KEY,
+id_domain_data integer REFERENCES was_in_use (id_table) ON DELETE CASCADE,
+start_time timestamp NOT NULL,
+end_time timestamp,
+lease_time integer NOT NULL,
+cash float DEFAULT 0);
+
+
+CREATE TABLE login_def (
+id_table SERIAL PRIMARY KEY,
+login_name varchar (255) NOT NULL,
+password_hash varchar (255) NOT NULL,
+access_level integer DEFAULT 10,
+active integer DEFAULT 1 );
+
+CREATE TABLE client_login (
+id_table SERIAL PRIMARY KEY,
+id_client_data integer REFERENCES client_table (id_table) ON DELETE CASCADE,
+login_name varchar (255) NOT NULL,
+password_hash varchar (255) NOT NULL );
+
+
+CREATE TABLE temporary_file (
+id_table SERIAL PRIMARY KEY,
+full_name varchar (255) NOT NULL,
+temp_file varchar (255) NOT NULL,
+last_update timestamp);
+
+
+INSERT INTO zone_cfg (d_zone, price, admin_email) VALUES ('com.ua', '63', 'admin@com.ua');
+INSERT INTO zone_cfg (d_zone, price, admin_email) VALUES ('ua', '59', 'admin@ua');
+INSERT INTO ns_list_cfg (ns_title, ns_domain_name, ns_ip) VALUES ('Primary NS', 'ns.reg.net.ua', '195.24.135.66');
+INSERT INTO ns_list_cfg (ns_title, ns_domain_name, ns_ip) VALUES ('Secondary NS', 'ns2.reg.net.ua', '195.24.133.77');
+INSERT INTO ns_list_cfg (ns_title, ns_domain_name, ns_ip) VALUES ('Secondary 2 NS', 'ns3.reg.net.ua', '188.16.215.145');
+INSERT INTO ns_list_cfg (ns_title, ns_domain_name, ns_ip) VALUES ('Secondary 3 NS', 'ns4.reg.net.ua', '132.84.45.13');
+INSERT INTO ns_list_cfg (ns_title, ns_domain_name, ns_ip) VALUES ('Secondary 4 NS', 'ns5.reg.net.ua', '33.14.75.166');
+INSERT INTO mx_list_cfg (mx_title, mx_domain_name, mx_ip) VALUES ('Primary Relay', 'mx.reg.net.ua', '195.24.135.66');
+INSERT INTO mx_list_cfg (mx_title, mx_domain_name, mx_ip) VALUES ('Secondary Relay', 'mx2.reg.net.ua', '195.24.133.77');
+INSERT INTO mx_list_cfg (mx_title, mx_domain_name, mx_ip) VALUES ('Telecom Relay', 'mx3.reg.net.ua', '144.16.43.172');
+INSERT INTO mx_list_cfg (mx_title, mx_domain_name, mx_ip) VALUES ('Voute IP Relay', 'mx4.reg.net.ua', '88.117.5.98');
+
+INSERT INTO zone_own_ns_cfg (id_zone_data, id_ns_data, ns_master) VALUES (1, 1, 1);
+INSERT INTO zone_own_ns_cfg (id_zone_data, id_ns_data, ns_master) VALUES (1, 2, 0);
+INSERT INTO zone_own_ns_cfg (id_zone_data, id_ns_data, ns_master) VALUES (1, 3, 0);
+INSERT INTO zone_own_ns_cfg (id_zone_data, id_ns_data, ns_master) VALUES (1, 4, 0);
+INSERT INTO zone_own_ns_cfg (id_zone_data, id_ns_data, ns_master) VALUES (2, 1, 1);
+INSERT INTO zone_own_ns_cfg (id_zone_data, id_ns_data, ns_master) VALUES (2, 2, 0);
+INSERT INTO zone_own_mx_cfg (id_zone_data, id_mx_data, mx_prior) VALUES (1, 1, 10);
+INSERT INTO zone_own_mx_cfg (id_zone_data, id_mx_data, mx_prior) VALUES (1, 2, 20);
+INSERT INTO zone_own_mx_cfg (id_zone_data, id_mx_data, mx_prior) VALUES (2, 1, 5);
+INSERT INTO zone_own_mx_cfg (id_zone_data, id_mx_data, mx_prior) VALUES (2, 2, 15);
+
+
+DROP TABLE wait_for_pay;
+DROP TABLE registered;
+DROP TABLE refused;
+DROP TABLE to_prolong;
+DROP TABLE to_create;
+DROP TABLE to_delete;
+DROP TABLE domain_status_table;
+DROP TABLE descr_table;
+DROP TABLE dates_table;
+DROP TABLE domain_own_ns;
+DROP TABLE domain_own_mx;
+DROP TABLE ip_table;
+DROP TABLE client_owns_table;
+DROP TABLE client_table;
+DROP TABLE domain_data;
+
+DROP TABLE zone_own_ns_cfg;
+DROP TABLE zone_own_mx_cfg;
+DROP TABLE ns_list_cfg;
+DROP TABLE mx_list_cfg;
+DROP TABLE zone_cfg;
+
+DROP TABLE was_in_use_descr;
+DROP TABLE was_in_use;
+
+DROP TABLE login_def;
+DROP TABLE client_login;
+
+DROP TABLE temporary_file;

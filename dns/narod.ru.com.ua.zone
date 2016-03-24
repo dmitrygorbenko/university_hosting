@@ -1,0 +1,23 @@
+$ORIGIN .
+$TTL 86400	; 1 day
+narod.ru.com.ua			IN SOA  ns.hosting.ai. hostmaster.hosting.ai. (
+				2005092310 ; serial
+				10800      ; refresh (3 hours)
+				900        ; retry (15 minutes)
+				604800     ; expire (1 week)
+				3600       ; negative caching (1 hour)
+				)
+		IN	NS	ns.hosting.ai.
+		IN	NS	ns2.hosting.ai.
+		IN	MX	10	mx.hosting.ai.
+		IN	MX	20	mx2.hosting.ai.
+		IN	A	172.16.212.200
+$ORIGIN narod.ru.com.ua.
+www		IN	A	172.16.212.200
+www2		IN	A	172.16.212.200
+mx3		IN	A	172.16.212.200
+ftp		A	172.16.212.53
+ftp2		IN	CNAME	ftp
+ftp		IN	MX	10	ns.hosting.ai
+ftp		MX	20	ns.hosting.ai
+ftp		IN	MX	30	ns.hosting.ai
